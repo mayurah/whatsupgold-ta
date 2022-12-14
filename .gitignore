@@ -2,3 +2,4 @@
 __pycache__
 local/*
 metadata/local*
+.DS_Store

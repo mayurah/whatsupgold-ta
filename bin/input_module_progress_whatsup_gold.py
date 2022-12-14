@@ -127,7 +127,7 @@ def collect_events(helper, ew):
     device_reports = helper.get_arg('device_reports')
 
 
-    log("Init - 1.0.5", debug=True)
+    log("TA Init - 2.0.1", debug=True)
 
 
     def generate_token():
@@ -190,7 +190,6 @@ def collect_events(helper, ew):
         for group in groups["data"]["groups"]:
             log(group, SOURCETYPE_WG_GROUPS)
             get_devices(group["id"])
-            break
         
         
     # Get Devices for given group
@@ -203,7 +202,6 @@ def collect_events(helper, ew):
             for device in devices["data"]["devices"]:
                 log(device, SOURCETYPE_WG_DEVICES)
                 get_additional_data("1") # device["id"]
-                break
     
     # Get Devices for given group
     def get_additional_data(device_id):
