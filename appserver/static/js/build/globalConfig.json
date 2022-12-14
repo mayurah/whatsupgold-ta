@@ -1,0 +1,465 @@
+{
+    "meta": {
+        "name": "ta-progress-whatsup-gold-add-on-for-splunk",
+        "displayName": "Progress WhatsUp Gold Add-on for Splunk",
+        "version": "1.0.0",
+        "restRoot": "ta_progress_whatsup_gold_add_on_for_splunk",
+        "schemaVersion": "0.0.3"
+    },
+    "pages": {
+        "configuration": {
+            "title": "Configuration",
+            "description": "Set up your add-on",
+            "tabs": [
+                {
+                    "name": "logging",
+                    "title": "Logging",
+                    "entity": [
+                        {
+                            "field": "loglevel",
+                            "label": "Log level",
+                            "type": "singleSelect",
+                            "options": {
+                                "disableSearch": true,
+                                "autoCompleteFields": [
+                                    {
+                                        "label": "DEBUG",
+                                        "value": "DEBUG"
+                                    },
+                                    {
+                                        "label": "INFO",
+                                        "value": "INFO"
+                                    },
+                                    {
+                                        "label": "WARNING",
+                                        "value": "WARNING"
+                                    },
+                                    {
+                                        "label": "ERROR",
+                                        "value": "ERROR"
+                                    },
+                                    {
+                                        "label": "CRITICAL",
+                                        "value": "CRITICAL"
+                                    }
+                                ]
+                            },
+                            "defaultValue": "INFO"
+                        }
+                    ]
+                },
+                {
+                    "name": "additional_parameters",
+                    "title": "Add-on Settings",
+                    "entity": [
+                        {
+                            "field": "whatsup_gold_api_endpoint",
+                            "label": "WhatsUp Gold API Endpoint",
+                            "type": "text",
+                            "help": "Endpoint of WhatsUp Gold API",
+                            "required": true,
+                            "defaultValue": "",
+                            "validators": [
+                                {
+                                    "type": "string",
+                                    "minLength": 0,
+                                    "maxLength": 8192,
+                                    "errorMsg": "Max length of text input is 8192"
+                                }
+                            ],
+                            "options": {
+                                "placeholder": "example: http://10.202.4.251:9644/"
+                            }
+                        },
+                        {
+                            "field": "whatsup_gold_web_endpoint",
+                            "label": "WhatsUp Gold Web Endpoint",
+                            "type": "text",
+                            "help": "Web Endpoint servers UI.",
+                            "required": true,
+                            "defaultValue": "",
+                            "validators": [
+                                {
+                                    "type": "string",
+                                    "minLength": 0,
+                                    "maxLength": 8192,
+                                    "errorMsg": "Max length of text input is 8192"
+                                }
+                            ],
+                            "options": {
+                                "placeholder": "example: http://10.202.4.251/"
+                            }
+                        },
+                        {
+                            "field": "whatsup_gold_username",
+                            "label": "WhatsUp Gold Username",
+                            "type": "text",
+                            "help": "Note: admin/service account",
+                            "required": true,
+                            "defaultValue": "",
+                            "validators": [
+                                {
+                                    "type": "string",
+                                    "minLength": 0,
+                                    "maxLength": 8192,
+                                    "errorMsg": "Max length of text input is 8192"
+                                }
+                            ]
+                        },
+                        {
+                            "field": "whatsup_gold_password",
+                            "label": "WhatsUp Gold Password",
+                            "type": "text",
+                            "help": "",
+                            "required": true,
+                            "defaultValue": "",
+                            "encrypted": true,
+                            "validators": [
+                                {
+                                    "type": "string",
+                                    "minLength": 0,
+                                    "maxLength": 8192,
+                                    "errorMsg": "Max length of password is 8192"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "inputs": {
+            "title": "Inputs",
+            "description": "Manage your data inputs",
+            "table": {
+                "header": [
+                    {
+                        "field": "name",
+                        "label": "Name"
+                    },
+                    {
+                        "field": "interval",
+                        "label": "Interval"
+                    },
+                    {
+                        "field": "index",
+                        "label": "Index"
+                    },
+                    {
+                        "field": "disabled",
+                        "label": "Status"
+                    }
+                ],
+                "moreInfo": [
+                    {
+                        "field": "name",
+                        "label": "Name"
+                    },
+                    {
+                        "field": "interval",
+                        "label": "Interval"
+                    },
+                    {
+                        "field": "index",
+                        "label": "Index"
+                    },
+                    {
+                        "field": "disabled",
+                        "label": "Status"
+                    },
+                    {
+                        "field": "device_reports",
+                        "label": "Device Reports"
+                    },
+                    {
+                        "field": "time_range",
+                        "label": "Time Range"
+                    },
+                    {
+                        "field": "range_n",
+                        "label": "Range N"
+                    },
+                    {
+                        "field": "debug",
+                        "label": "Debug"
+                    }
+                ],
+                "actions": [
+                    "edit",
+                    "enable",
+                    "delete",
+                    "clone"
+                ]
+            },
+            "services": [
+                {
+                    "name": "progress_whatsup_gold",
+                    "title": "Progress WhatsUp Gold",
+                    "entity": [
+                        {
+                            "field": "name",
+                            "label": "Name",
+                            "type": "text",
+                            "help": "Enter a unique name for the data input",
+                            "required": true,
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "pattern": "^[a-zA-Z]\\w*$",
+                                    "errorMsg": "Input Name must start with a letter and followed by alphabetic letters, digits or underscores."
+                                },
+                                {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 100,
+                                    "errorMsg": "Length of input name should be between 1 and 100"
+                                }
+                            ]
+                        },
+                        {
+                            "field": "interval",
+                            "label": "Interval",
+                            "type": "text",
+                            "required": true,
+                            "help": "Time interval of input in seconds.",
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "pattern": "^\\-[1-9]\\d*$|^\\d*$",
+                                    "errorMsg": "Interval must be an integer."
+                                }
+                            ]
+                        },
+                        {
+                            "field": "index",
+                            "label": "Index",
+                            "type": "singleSelect",
+                            "defaultValue": "default",
+                            "options": {
+                                "endpointUrl": "data/indexes",
+                                "createSearchChoice": true,
+                                "denyList": "^_.*$"
+                            },
+                            "required": true,
+                            "validators": [
+                                {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 80,
+                                    "errorMsg": "Length of index name should be between 1 and 80."
+                                }
+                            ]
+                        },
+                        {
+                            "field": "device_reports",
+                            "label": "Device Reports",
+                            "help": "Pick the reports you'd like to fetch.",
+                            "required": false,
+                            "type": "multipleSelect",
+                            "defaultValue": "cpu-utilization~ping-availability~state-change~disk-utilization~interface-utilization~memory-utilization",
+                            "options": {
+                                "delimiter": "~",
+                                "items": [
+                                    {
+                                        "value": "cpu-utilization",
+                                        "label": "CPU Utilization"
+                                    },
+                                    {
+                                        "value": "disk-free-space",
+                                        "label": "Disk Free Space"
+                                    },
+                                    {
+                                        "value": "disk-utilization",
+                                        "label": "Disk Utilization"
+                                    },
+                                    {
+                                        "value": "interface-discards",
+                                        "label": "Interface Discards"
+                                    },
+                                    {
+                                        "value": "interface-errors",
+                                        "label": "Interface Errors"
+                                    },
+                                    {
+                                        "value": "interface-traffic",
+                                        "label": "Interface Traffic"
+                                    },
+                                    {
+                                        "value": "interface-utilization",
+                                        "label": "Interface Utilization"
+                                    },
+                                    {
+                                        "value": "memory-utilization",
+                                        "label": "Memory Utilization"
+                                    },
+                                    {
+                                        "value": "ping-availability",
+                                        "label": "Ping Availability"
+                                    },
+                                    {
+                                        "value": "response-time",
+                                        "label": "Response Time"
+                                    },
+                                    {
+                                        "value": "state-change",
+                                        "label": "State Change"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "field": "time_range",
+                            "label": "Time Range",
+                            "help": "Typically, keep \"TIme Range\" and Interval as same amount to avoid querying same data multiple times.",
+                            "required": true,
+                            "type": "singleSelect",
+                            "defaultValue": "today",
+                            "options": {
+                                "disableSearch": true,
+                                "autoCompleteFields": [
+                                    {
+                                        "value": "today",
+                                        "label": "today"
+                                    },
+                                    {
+                                        "value": "lastPolled",
+                                        "label": "lastPolled"
+                                    },
+                                    {
+                                        "value": "yesterday",
+                                        "label": "yesterday"
+                                    },
+                                    {
+                                        "value": "lastWeek",
+                                        "label": "lastWeek"
+                                    },
+                                    {
+                                        "value": "lastMonth",
+                                        "label": "lastMonth"
+                                    },
+                                    {
+                                        "value": "lastQuarter",
+                                        "label": "lastQuarter"
+                                    },
+                                    {
+                                        "value": "weekToDate",
+                                        "label": "weekToDate"
+                                    },
+                                    {
+                                        "value": "monthToDate",
+                                        "label": "monthToDate"
+                                    },
+                                    {
+                                        "value": "quarterToDate",
+                                        "label": "quarterToDate"
+                                    },
+                                    {
+                                        "value": "lastNSeconds",
+                                        "label": "lastNSeconds"
+                                    },
+                                    {
+                                        "value": "lastNMinutes",
+                                        "label": "lastNMinutes"
+                                    },
+                                    {
+                                        "value": "lastNHours",
+                                        "label": "lastNHours"
+                                    },
+                                    {
+                                        "value": "lastNDays",
+                                        "label": "lastNDays"
+                                    },
+                                    {
+                                        "value": "lastNWeeks",
+                                        "label": "lastNWeeks"
+                                    },
+                                    {
+                                        "value": "lastNMonths",
+                                        "label": "lastNMonths"
+                                    }
+                                ],
+                                "placeholder": "today"
+                            }
+                        },
+                        {
+                            "field": "range_n",
+                            "label": "Range N",
+                            "help": "Default is \"1\". Multiplier for the last\"N\" kind timerange.",
+                            "required": true,
+                            "type": "singleSelect",
+                            "defaultValue": "1",
+                            "options": {
+                                "disableSearch": true,
+                                "autoCompleteFields": [
+                                    {
+                                        "value": "1",
+                                        "label": "1"
+                                    },
+                                    {
+                                        "value": "2",
+                                        "label": "2"
+                                    },
+                                    {
+                                        "value": "3",
+                                        "label": "3"
+                                    },
+                                    {
+                                        "value": "4",
+                                        "label": "4"
+                                    },
+                                    {
+                                        "value": "5",
+                                        "label": "5"
+                                    },
+                                    {
+                                        "value": "6",
+                                        "label": "6"
+                                    },
+                                    {
+                                        "value": "7",
+                                        "label": "7"
+                                    },
+                                    {
+                                        "value": "8",
+                                        "label": "8"
+                                    },
+                                    {
+                                        "value": "9",
+                                        "label": "9"
+                                    },
+                                    {
+                                        "value": "10",
+                                        "label": "10"
+                                    },
+                                    {
+                                        "value": "11",
+                                        "label": "11"
+                                    },
+                                    {
+                                        "value": "12",
+                                        "label": "12"
+                                    },
+                                    {
+                                        "value": "13",
+                                        "label": "13"
+                                    },
+                                    {
+                                        "value": "14",
+                                        "label": "14"
+                                    }
+                                ],
+                                "placeholder": "1"
+                            }
+                        },
+                        {
+                            "field": "debug",
+                            "label": "Debug",
+                            "help": "Turn it on to produce more events/logs to identify any issues or reset the checkpoint.",
+                            "required": false,
+                            "type": "checkbox"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

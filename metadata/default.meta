@@ -1,0 +1,23 @@
+
+[]
+access = read : [ * ], write : [ admin ]
+export = system
+
+[views]
+access = read : [ * ], write : [ admin ]
+export = none
+
+[props/progress%3Awhatsupgold]
+owner = admin
+version = 9.0.1
+modtime = 1667509872.923794000
+
+[props/source%3A%3A...ta-progress-whatsup-gold-add-on-for-splunk%2A.log%2A]
+owner = admin
+version = 9.0.1
+modtime = 1667509873.134042000
+
+[props/source%3A%3A...ta_progress_whatsup_gold_add_on_for_splunk%2A.log%2A]
+owner = admin
+version = 9.0.1
+modtime = 1667509873.301678000
