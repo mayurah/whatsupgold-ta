@@ -209,7 +209,9 @@ def collect_events(helper, ew):
     
     # Get Devices for given group
     def get_additional_data(device_id):
+        global_endpoint = ["device-attribute"]
         endpoints = {
+          "device-attribute": f"/api/v1/devices/{device_id}/attributes/-",
           "cpu-utilization": f"/api/v1/devices/{device_id}/reports/cpu-utilization?range={TIME_RANGE}&rangeN={RANGE_N}",
           "disk-free-space": f"/api/v1/devices/{device_id}/reports/disk-free-space?range={TIME_RANGE}&rangeN={RANGE_N}",
           "disk-utilization": f"/api/v1/devices/{device_id}/reports/disk-utilization?range={TIME_RANGE}&rangeN={RANGE_N}",
@@ -222,10 +224,9 @@ def collect_events(helper, ew):
           "response-time": f"/api/v1/devices/{device_id}/reports/ping-response-time?range={TIME_RANGE}&rangeN={RANGE_N}",
           "state-change": f"/api/v1/devices/{device_id}/reports/state-change?range={TIME_RANGE}&rangeN={RANGE_N}"
             }
-
-
+        
         for sourcetype in endpoints:
-            if sourcetype in device_reports:
+            if sourcetype in device_reports or sourcetype in global_endpoint:
                 endpoint = endpoints[sourcetype]
                 # log(endpoints, debug=True)
                 metadata = api_call(endpoint)["data"]
