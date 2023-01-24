@@ -239,13 +239,14 @@ def collect_events(helper, ew):
     #log(ACCESS_TOKEN + "asd")
     # Get Version
     log(get_version(), debug=True)
-    if query_devices_list is True:
-        for device in devices_id:
-            get_additional_data(str(device))
-            log('Querying defined list of the devices.')
-    else:
-        get_groups()
-        log('Querying all the groups and devices')
+    
+    #if query_devices_list is True:
+    for device in devices_id:
+        get_additional_data(str(device))
+        log('Querying defined list of the devices.')
+    #else:
+    #    get_groups()
+    #    log('Querying all the groups and devices')
     
     
     # auth = HTTPBasicAuth(global_whatsup_gold_username, global_whatsup_gold_password)
