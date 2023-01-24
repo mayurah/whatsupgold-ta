@@ -209,7 +209,7 @@ def collect_events(helper, ew):
         if len(devices_data) >= MIN_LENGTH:
             for device in devices["data"]["devices"]:
                 log(device, SOURCETYPE_WG_DEVICES)
-                if int(device["id"]) in devices_id
+                if int(device["id"]) in devices_id:
                     get_additional_data(device["id"]) # device["id"]
                 else:
                     log(f' {device["id"]} not in devices_id', SOURCETYPE_WG_DEVICES)
