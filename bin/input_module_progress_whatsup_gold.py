@@ -62,6 +62,10 @@ IS_DEBUG_ENABLED = False
 OPT_BASEURL = " "
 RANGE_N = "1"
 
+group_id = [ '72', '52', '213', '215']
+devices_id = [ '875', '876', '1058', '1059', '1060', '1061', '1062', '1063', '1064', '1066', '1067', '1068', '1069', '1070', '1072', '1073', '1074', '1075', '1076', '1077', '1078', '1079', '1219', '1453', '1595', '1596', '1597', '1598', '1599', '1600', '1601', '1602', '1603', '1604', '1605', '1606', '1607', '1608', '1609', '1610', '1611', '1612', '1613', '1614', '1615', '1616', '1617', '1631', '1632', '1633', '1634', '1635', '1636', '2069', '2070', '2072', '2073', '2074', '2075', '2076', '2077', '2078', '2079', '2080', '2081', '2082', '2083', '2084', '2085', '2086', '2087', '2088', '2089', '2090', '2091', '2092', '2093', '2094', '2095', '2096', '2097', '2098', '2099', '2100', '2101', '2102', '2103', '2104', '2105', '2106', '2107', '2108', '2109', '2110', '2111', '2112', '2113', '2114', '2115', '2116', '2117', '2118', '2119', '2120', '1621', '1627', '1629', '1620', '1630', '1623', '1624', '1618', '1626', '1619', '1628', '1625', '1622', '920' ] 
+
+
 def validate_input(helper, definition):
     """Implement your own validation logic to validate the input stanza configurations"""
     # This example accesses the modular input variable
@@ -184,12 +188,16 @@ def collect_events(helper, ew):
         
     # Get Groups
     def get_groups():
-        endpoint = "/api/v1/device-groups/-?limit=10000"
-        groups = api_call(endpoint)
+        ## endpoint = "/api/v1/device-groups/-?limit=10000"
+        ## groups = api_call(endpoint)
         
-        for group in groups["data"]["groups"]:
-            log(group, SOURCETYPE_WG_GROUPS)
-            get_devices(group["id"])
+        ## for group in groups["data"]["groups"]:
+        ##    log(group, SOURCETYPE_WG_GROUPS)
+        ##    # get_devices(group["id"])
+
+        for group in group_id:
+            # log(group, SOURCETYPE_WG_GROUPS)
+            get_devices(group)
         
         
     # Get Devices for given group
@@ -201,7 +209,11 @@ def collect_events(helper, ew):
         if len(devices_data) >= MIN_LENGTH:
             for device in devices["data"]["devices"]:
                 log(device, SOURCETYPE_WG_DEVICES)
-                get_additional_data("1") # device["id"]
+                if int(device["id"]) in devices_id
+                    get_additional_data(device["id"]) # device["id"]
+                else:
+                    log(f' {device["id"]} not in devices_id', SOURCETYPE_WG_DEVICES)
+            
     
     # Get Devices for given group
     def get_additional_data(device_id):
