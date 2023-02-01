@@ -209,8 +209,9 @@ def collect_events(helper, ew):
     
     # Get Devices for given group
     def get_additional_data(device_id):
-        global_endpoint = ["device-attribute"]
+        global_endpoint = ["device-attribute", "devices"]
         endpoints = {
+          "devices" : f"/api/v1/devices/{device_id}/status",
           "device-attribute": f"/api/v1/devices/{device_id}/attributes/-",
           "cpu-utilization": f"/api/v1/devices/{device_id}/reports/cpu-utilization?range={TIME_RANGE}&rangeN={RANGE_N}",
           "disk-free-space": f"/api/v1/devices/{device_id}/reports/disk-free-space?range={TIME_RANGE}&rangeN={RANGE_N}",
