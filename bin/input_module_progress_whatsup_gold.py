@@ -62,7 +62,7 @@ IS_DEBUG_ENABLED = False
 OPT_BASEURL = " "
 RANGE_N = "1"
 
-group_id = [ '72', '52', '213', '215']
+groups_id = [ '72', '52', '213', '215']
 devices_id = [ '8053', '8054', '8055', '8056', '8057', '8058', '8059', '8060', '8061', '8062', '8063', '8064', '8065', '8066', '8067', '8068', '8069', '8070', '8071', '8072', '8073', '8074', '8075', '8112', '8113', '8116', '8076', '8077', '8078', '8079', '8080', '8081', '8082', '8083', '8084', '8085', '8086', '8087', '8088', '8089', '8090', '8091', '8092', '8093', '8118', '8119', '8120', '875', '876', '1058', '1059', '1060', '1061', '1062', '1063', '1064', '1066', '1067', '1068', '1069', '1070', '1072', '1073', '1074', '1075', '1076', '1077', '1078', '1079', '1219', '1453', '1595', '1596', '1597', '1598', '1599', '1600', '1601', '1602', '1603', '1604', '1605', '1606', '1607', '1608', '1609', '1610', '1611', '1612', '1613', '1614', '1615', '1616', '1617', '1631', '1632', '1633', '1634', '1635', '1636', '2069', '2070', '2072', '2073', '2074', '2075', '2076', '2077', '2078', '2079', '2080', '2081', '2082', '2083', '2084', '2085', '2086', '2087', '2088', '2089', '2090', '2091', '2092', '2093', '2094', '2095', '2096', '2097', '2098', '2099', '2100', '2101', '2102', '2103', '2104', '2105', '2106', '2107', '2108', '2109', '2110', '2111', '2112', '2113', '2114', '2115', '2116', '2117', '2118', '2119', '2120', '1621', '1627', '1629', '1620', '1630', '1623', '1624', '1618', '1626', '1619', '1628', '1625', '1622', '920' ]
 # total: 165 devices
 query_devices_list = True
@@ -205,25 +205,25 @@ def collect_events(helper, ew):
         if len(devices_data) >= MIN_LENGTH:
             for device in devices["data"]["devices"]:
                 log(device, SOURCETYPE_WG_DEVICES)
-                get_additional_data(device["id"])
+                # get_additional_data(device["id"])
             
     
     # Get Devices for given group
     def get_additional_data(device_id):
         global_endpoint = ["device-attribute", "devices"]
         endpoints = {
-          "devices" : f"/api/v1/devices/{device_id}/status",
-          "device-attribute": f"/api/v1/devices/{device_id}/attributes/-",
+          # "devices-status" : f"/api/v1/devices/{device_id}/status",
+          # "device-attribute": f"/api/v1/devices/{device_id}/attributes/-",
           "cpu-utilization": f"/api/v1/devices/{device_id}/reports/cpu-utilization?range={TIME_RANGE}&rangeN={RANGE_N}",
           "disk-free-space": f"/api/v1/devices/{device_id}/reports/disk-free-space?range={TIME_RANGE}&rangeN={RANGE_N}",
           "disk-utilization": f"/api/v1/devices/{device_id}/reports/disk-utilization?range={TIME_RANGE}&rangeN={RANGE_N}",
-          "interface-discards": f"/api/v1/devices/{device_id}/reports/interface-discards?range={TIME_RANGE}&rangeN={RANGE_N}",
+          # "interface-discards": f"/api/v1/devices/{device_id}/reports/interface-discards?range={TIME_RANGE}&rangeN={RANGE_N}",
           "interface-errors": f"/api/v1/devices/{device_id}/reports/interface-errors?range={TIME_RANGE}&rangeN={RANGE_N}",
-          "interface-traffic": f"/api/v1/devices/{device_id}/reports/interface-traffic?range={TIME_RANGE}&rangeN={RANGE_N}",
+          # "interface-traffic": f"/api/v1/devices/{device_id}/reports/interface-traffic?range={TIME_RANGE}&rangeN={RANGE_N}",
           "interface-utilization": f"/api/v1/devices/{device_id}/reports/interface-utilization?range={TIME_RANGE}&rangeN={RANGE_N}",
           "memory-utilization": f"/api/v1/devices/{device_id}/reports/memory-utilization?range={TIME_RANGE}&rangeN={RANGE_N}",
           "ping-availability": f"/api/v1/devices/{device_id}/reports/ping-availability?range={TIME_RANGE}&rangeN={RANGE_N}",
-          "response-time": f"/api/v1/devices/{device_id}/reports/ping-response-time?range={TIME_RANGE}&rangeN={RANGE_N}",
+          # "response-time": f"/api/v1/devices/{device_id}/reports/ping-response-time?range={TIME_RANGE}&rangeN={RANGE_N}",
           "state-change": f"/api/v1/devices/{device_id}/reports/state-change?range={TIME_RANGE}&rangeN={RANGE_N}"
             }
         
@@ -231,10 +231,13 @@ def collect_events(helper, ew):
             if sourcetype in device_reports or sourcetype in global_endpoint:
                 endpoint = endpoints[sourcetype]
                 # log(endpoints, debug=True)
-                metadata = api_call(endpoint)["data"]
-                if len(metadata) >= MIN_LENGTH:
-                    for event in metadata:
-                        log(event, sourcetype=f"progress:whatsupgold:{sourcetype}")
+                try:
+                    metadata = api_call(endpoint)["data"]
+                    if len(metadata) >= MIN_LENGTH:
+                        for event in metadata:
+                            log(event, sourcetype=f"progress:whatsupgold:{sourcetype}")
+                except Exception as e:
+                    continue
 
     # Generate Token
     ACCESS_TOKEN = generate_token()
@@ -242,10 +245,19 @@ def collect_events(helper, ew):
     # Get Version
     log(get_version(), debug=True)
     
+    
+    for group_id in groups_id:
+        try:
+            get_devices(group_id)
+        except Exception as e:
+            continue
     #if query_devices_list is True:
     for device in devices_id:
-        get_additional_data(str(device))
-        log('Querying defined list of the devices.')
+        try:
+            get_additional_data(str(device))
+            log('Querying defined list of the devices.')
+        except Exception as e:
+            continue
     #else:
     #    get_groups()
     #    log('Querying all the groups and devices')
