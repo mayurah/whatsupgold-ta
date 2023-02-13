@@ -75,6 +75,9 @@ def validate_input(helper, definition):
 
 def collect_events(helper, ew):
     
+    input_type = helper.get_input_type()
+    input_name = list(helper.get_input_stanza().keys())[0]
+    
     def log(message, sourcetype=None, exception=False, debug=False):
         
         if type(message) is dict:
@@ -94,7 +97,7 @@ def collect_events(helper, ew):
         if exception == True:
             sourcetype = SOURCETYPE_WG_ERR
 
-        event = helper.new_event(source=helper.get_input_type(), index=helper.get_output_index(), sourcetype=sourcetype, data=message)
+        event = helper.new_event(source=f'{helper.get_input_type()}/{input_name}', index=helper.get_output_index(), sourcetype=sourcetype, data=message)
         ew.write_event(event)
 
     def api_call(endpoint, method="GET"):
