@@ -100,6 +100,11 @@ def collect_events(helper, ew):
         event = helper.new_event(source=f'{helper.get_input_type()}/{input_name}', index=helper.get_output_index(), sourcetype=sourcetype, data=message)
         ew.write_event(event)
 
+    def write_file(filen, data):
+        f = open(filen, "a")
+        f.write(data)
+        f.close()
+
     def api_call(endpoint, method="GET"):
         try:
             url = f'{OPT_BASEURL}/{endpoint}'
